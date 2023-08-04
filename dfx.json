@@ -1,26 +1,17 @@
 {
   "version": 1,
   "canisters": {
-    "expose_canister_metrics_for_scraper_backend": {
+    "backend": {
       "type": "rust",
-      "package": "expose_canister_metrics_for_scraper_backend",
-      "candid": "src/expose_canister_metrics_for_scraper_backend/expose_canister_metrics_for_scraper_backend.did"
+      "package": "backend",
+      "candid": "src/backend/can.did"
     },
-    "expose_canister_metrics_for_scraper_frontend": {
-      "type": "assets",
-      "source": [
-        "src/expose_canister_metrics_for_scraper_frontend/assets"
-      ],
-      "dependencies": [
-        "expose_canister_metrics_for_scraper_backend"
-      ]
-    }
-  },
-  "defaults": {
-    "build": {
-      "packtool": "",
-      "args": ""
-    }
-  },
-  "output_env_file": ".env"
+    "defaults": {
+      "build": {
+        "packtool": "",
+        "args": ""
+      }
+    },
+    "output_env_file": ".env"
+  }
 }
