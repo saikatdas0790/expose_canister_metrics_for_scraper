@@ -5,13 +5,6 @@
       "type": "rust",
       "package": "backend",
       "candid": "src/backend/can.did"
-    },
-    "defaults": {
-      "build": {
-        "packtool": "",
-        "args": ""
-      }
-    },
-    "output_env_file": ".env"
+    }
   }
 }

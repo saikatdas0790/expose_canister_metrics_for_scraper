@@ -1,3 +1,14 @@
-service : {
-    "greet": (text) -> (text) query;
+type CanisterStatus = record {
+  cycle_balance : nat;
+  idle_cycles_burned_per_day : nat;
+  memory_consumed : nat;
+};
+type CanisterStatusError = record {
+  canister_id : principal;
+  error_message : text;
+};
+type InitArgs = record { endpoint_to_initialize_with : opt text };
+type Result = variant { Ok : CanisterStatus; Err : CanisterStatusError };
+service : (InitArgs) -> {
+  get_my_canister_cycle_balance_and_memory_usage : () -> (Result);
 }
