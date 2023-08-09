@@ -2,7 +2,6 @@ use std::cell::RefCell;
 
 use candid::export_service;
 use canister_data::{CanisterData, InitArgs};
-use status::{CanisterStatus, CanisterStatusError};
 
 mod canister_data;
 mod canister_lifecycle;

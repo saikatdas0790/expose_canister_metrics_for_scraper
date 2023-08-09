@@ -1,13 +1,16 @@
 use std::time::Duration;
 
 use ic_cdk::api::management_canister::http_request::{
-    self, CanisterHttpRequestArgument, HttpHeader, HttpMethod,
+    self, CanisterHttpRequestArgument, HttpMethod,
 };
+use rmp_serde::encode;
 
-use crate::CANISTER_DATA;
+use crate::{status::get_my_canister_cycle_balance_and_memory_usage, CANISTER_DATA};
+
+const PING_INTERVAL_FOR_CALLING_METRICS_REST_API: Duration = Duration::from_secs(5);
 
 pub fn enqueue_timer_for_calling_metrics_rest_api() {
-    ic_cdk_timers::set_timer_interval(Duration::from_secs(3600), || {
+    ic_cdk_timers::set_timer_interval(PING_INTERVAL_FOR_CALLING_METRICS_REST_API, || {
         ic_cdk::spawn(ping_metrics_rest_api())
     });
 }
@@ -22,14 +25,13 @@ async fn ping_metrics_rest_api() {
         })
         .expect("Rest API endpoint is not set");
 
+    let status = get_my_canister_cycle_balance_and_memory_usage().await;
+
     let request_arg = CanisterHttpRequestArgument {
         url: url_to_ping,
         max_response_bytes: Some(0),
         method: HttpMethod::POST,
-        headers: vec![HttpHeader {
-            name: "canister-id".to_string(),
-            value: ic_cdk::id().to_string(),
-        }],
+        body: Some(encode::to_vec(&status).expect("Failed to serialize status")),
         ..Default::default()
     };
 
